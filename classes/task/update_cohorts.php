@@ -50,7 +50,7 @@ class update_cohorts extends \core\task\scheduled_task {
         if (get_config('local_profilecohort', 'updatecohorts')) {
             $manager = new profilecohort();
             $manager->update_all_cohorts_from_rules();
-            set_config('updatecohorts', false, 'local_profilecohort');
+            set_config('updatecohorts', true, 'local_profilecohort'); // GCHLOL: Change set value to true.
         }
     }
 }
