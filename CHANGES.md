@@ -4,6 +4,10 @@ moodle-local_profilecohort
 Changes
 -------
 
+### v4.1-r5
+
+* 2024-08-20 - Remove duplicate header on overview page.
+
 ### v4.1-r4
 
 * 2024-08-11 - Add section for scheduled tasks to README
