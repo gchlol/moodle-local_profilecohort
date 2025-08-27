@@ -1,7 +1,7 @@
 moodle-local_profilecohort
 ==========================
 
-[![Moodle Plugin CI](https://github.com/moodle-an-hochschulen/moodle-local_profilecohort/workflows/Moodle%20Plugin%20CI/badge.svg?branch=MOODLE_401_STABLE)](https://github.com/moodle-an-hochschulen/moodle-local_profilecohort/actions?query=workflow%3A%22Moodle+Plugin+CI%22+branch%3AMOODLE_401_STABLE)
+[![Moodle Plugin CI](https://github.com/moodle-an-hochschulen/moodle-local_profilecohort/actions/workflows/moodle-plugin-ci.yml/badge.svg?branch=MOODLE_405_STABLE)](https://github.com/moodle-an-hochschulen/moodle-local_profilecohort/actions?query=workflow%3A%22Moodle+Plugin+CI%22+branch%3AMOODLE_405_STABLE)
 
 Moodle plugin which lets admins manage cohort memberships based on users' custom profile fields
 
@@ -9,7 +9,7 @@ Moodle plugin which lets admins manage cohort memberships based on users' custom
 Requirements
 ------------
 
-This plugin requires Moodle 4.1+
+This plugin requires Moodle 4.5+
 
 
 Motivation for this plugin
@@ -20,6 +20,14 @@ Moodle core provides a mechanim to manually fill cohorts with users (on Site adm
 Now, larger or fragmented Moodle installations may have the need to manage a large number of cohorts which have a large amount of members and which may also change quite often. Managing cohorts by hand in such scenarios is simply unprofessional overkill - even / particularly if you distribute the work among multiple Moodle admins.
 
 On the other hand these large or fragmented Moodle installations might already have some custom user profile fields which can be leveraged to decide which cohort(s) a user should be a member of. This plugin implements a simple solution to manage cohort memberships based on a users' custom profile field.
+
+
+State of the plugin
+-------------------
+
+This plugin is considered feature-complete.
+
+It will be maintained for the time being, but will not receive any substantial improvements or new features anymore. Please consider the more versatile plugin [tool_dynamic_cohorts](https://moodle.org/plugins/tool_dynamic_cohorts) by Catalyst IT as an alternative.
 
 
 Installation

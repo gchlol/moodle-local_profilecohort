@@ -25,7 +25,7 @@
 namespace local_profilecohort;
 
 use moodleform;
-use single_select;
+use core\output\html_writer;
 
 /**
  * Class profilefields
@@ -64,14 +64,14 @@ abstract class profilefields {
             $this->action = 'view';
         }
         if (!PHPUNIT_TEST && !CLI_SCRIPT) {
-            $url = new \moodle_url($PAGE->url, ['action' => $this->action]);
+            $url = new \core\url($PAGE->url, ['action' => $this->action]);
             $PAGE->set_url($url);
         }
     }
 
     /**
      * Get the URL of the main page for this plugin.
-     * @return \moodle_url
+     * @return \core\url
      */
     protected function get_index_url() {
         global $PAGE;
@@ -138,7 +138,7 @@ abstract class profilefields {
                 $this->apply_all_rules();
             }
             // Always return to the 'view rules' tab when a rule has been saved successfully.
-            redirect(new \moodle_url($PAGE->url, ['action' => 'view']));
+            redirect(new \core\url($PAGE->url, ['action' => 'view']));
         }
     }
 
@@ -205,18 +205,18 @@ abstract class profilefields {
         $out .= $OUTPUT->render($tabs);
 
         if ($this->action == 'view') {
-            $out .= \html_writer::tag('div', get_string('viewintro', 'local_profilecohort').'<br />'.
+            $out .= html_writer::tag('div', get_string('viewintro', 'local_profilecohort').'<br />'.
                                      get_string('invisiblecohortsnote', 'local_profilecohort'),
                                      ['id' => 'intro', 'class' => 'box generalbox']);
         } else if ($this->action == 'add') {
-            $out .= \html_writer::tag('div', get_string('addintro', 'local_profilecohort').
+            $out .= html_writer::tag('div', get_string('addintro', 'local_profilecohort').
                                      '<br />'.get_string('invisiblecohortsnote', 'local_profilecohort'),
                                      ['id' => 'intro', 'class' => 'box generalbox']);
         }
 
         if (!$this->get_possible_fields()) {
-            $profilefieldsurl = new \moodle_url('/user/profile/index.php');
-            $link = \html_writer::link($profilefieldsurl, get_string('profilefields', 'core_admin'));
+            $profilefieldsurl = new \core\url('/user/profile/index.php');
+            $link = html_writer::link($profilefieldsurl, get_string('profilefields', 'core_admin'));
             $notification = new \core\output\notification(get_string('nofields', 'local_profilecohort', $link),
                                                           \core\output\notification::NOTIFY_ERROR);
             $notification->set_show_closebutton(false);
@@ -233,7 +233,7 @@ abstract class profilefields {
 
     /**
      * Allow subclasses to define extra tabs to be included at the top of the page.
-     * @return \tabobject[]
+     * @return \core\output\tabobject[]
      */
     protected function extra_tabs() {
         return [];
@@ -241,17 +241,17 @@ abstract class profilefields {
 
     /**
      * Generate tabs for the display
-     * @return \tabtree
+     * @return \core\output\tabtree
      */
     protected function get_tabs() {
         $tabs = [];
-        $tabs[] = new \tabobject('view', new \moodle_url($this->get_index_url(), ['action' => 'view']),
+        $tabs[] = new \core\output\tabobject('view', new \core\url($this->get_index_url(), ['action' => 'view']),
                                  get_string('viewrules', 'local_profilecohort'));
-        $tabs[] = new \tabobject('add', new \moodle_url($this->get_index_url(), ['action' => 'add']),
+        $tabs[] = new \core\output\tabobject('add', new \core\url($this->get_index_url(), ['action' => 'add']),
                                  get_string('addrules', 'local_profilecohort'));
         $tabs = array_merge($tabs, $this->extra_tabs());
 
-        $tabtree = new \tabtree($tabs, $this->action);
+        $tabtree = new \core\output\tabtree($tabs, $this->action);
 
         return $tabtree;
     }
@@ -264,7 +264,8 @@ abstract class profilefields {
         global $OUTPUT, $PAGE;
         $opts = $this->get_possible_fields();
         $opts = array_map('format_string', $opts);
-        $select = new single_select($PAGE->url, 'add', $opts, '', [null => get_string('addrule', 'local_profilecohort')]);
+        $select = new \core\output\single_select($PAGE->url, 'add', $opts, '',
+                [null => get_string('addrule', 'local_profilecohort')]);
         $select->attributes['id'] = 'local_profilecohort_add';
         return $OUTPUT->render($select);
     }

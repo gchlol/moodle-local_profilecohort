@@ -24,7 +24,7 @@
 
 namespace local_profilecohort;
 
-use html_writer;
+use core\output\html_writer;
 
 /**
  * Class profilecohort
@@ -41,10 +41,10 @@ class profilecohort extends profilefields {
 
     /**
      * Get the URL of the main page for this plugin.
-     * @return \moodle_url
+     * @return \core\url
      */
     protected function get_index_url() {
-        return new \moodle_url('/local/profilecohort/index.php');
+        return new \core\url('/local/profilecohort/index.php');
     }
 
     /**
@@ -53,7 +53,7 @@ class profilecohort extends profilefields {
     public function process_form() {
         if (!$this->get_possible_values()) {
             // If there are no cohorts selected, go to the form for selecting cohorts.
-            $cohorturl = new \moodle_url('/local/profilecohort/cohorts.php');
+            $cohorturl = new \core\url('/local/profilecohort/cohorts.php');
             redirect($cohorturl);
         }
         if ($this->action != 'members') {
@@ -79,13 +79,13 @@ class profilecohort extends profilefields {
 
     /**
      * Allow subclasses to define extra tabs to be included at the top of the page.
-     * @return \tabobject[]
+     * @return \core\output\tabobject[]
      */
     protected function extra_tabs() {
         return [
-            new \tabobject('members', new \moodle_url($this->get_index_url(), ['action' => 'members']),
+            new \core\output\tabobject('members', new \core\url($this->get_index_url(), ['action' => 'members']),
                            get_string('members', 'local_profilecohort')),
-            new \tabobject('cohorts', new \moodle_url('/local/profilecohort/cohorts.php'),
+            new \core\output\tabobject('cohorts', new \core\url('/local/profilecohort/cohorts.php'),
                            get_string('selectcohorts', 'local_profilecohort')),
         ];
     }
@@ -101,7 +101,7 @@ class profilecohort extends profilefields {
         $tabs = $this->get_tabs();
         $out .= $OUTPUT->render($tabs);
 
-        $out .= \html_writer::tag('div', get_string('membersintro', 'local_profilecohort').'<br/>'.
+        $out .= html_writer::tag('div', get_string('membersintro', 'local_profilecohort').'<br/>'.
                                  get_string('invisiblecohortsnote', 'local_profilecohort'),
                                  ['id' => 'intro', 'class' => 'box generalbox']);
 
@@ -132,7 +132,7 @@ class profilecohort extends profilefields {
                 $lastcohortname = $user->cohortname;
             }
             if ($user->id) {
-                $userurl = new \moodle_url('/user/view.php', ['id' => $user->id]);
+                $userurl = new \core\url('/user/view.php', ['id' => $user->id]);
                 $cohortmembers[] = html_writer::link($userurl, fullname($user));
             }
         }
@@ -161,15 +161,15 @@ class profilecohort extends profilefields {
         // Bootstrap collapse header.
         $out .= html_writer::start_div('card-header', ['id' => $id.'-heading']);
         $out .= html_writer::start_tag('h2', ['class' => 'mb-0']);
-        $out .= html_writer::start_tag('button', ['class' => 'btn btn-link btn-block text-left pl-0', 'type' => 'button',
+        $out .= html_writer::start_tag('button', ['class' => 'btn btn-link btn-block text-start ps-0', 'type' => 'button',
                 'data-toggle' => 'collapse', 'data-target' => '#'.$id, 'aria-expanded' => 'false', 'aria-controls' => $id, ]);
         $out .= format_string($cohortname);
         if ($cohortmembers) {
             $out .= html_writer::tag('span', get_string('countusers', 'local_profilecohort', count($cohortmembers)),
-                    ['class' => 'badge badge-pill badge-primary ml-2']);
+                    ['class' => 'badge bg-primary text-light ms-2']);
         } else {
             $out .= html_writer::tag('span', get_string('countnousers', 'local_profilecohort'),
-                    ['class' => 'badge badge-pill badge-secondary ml-2']);
+                    ['class' => 'badge bg-secondary text-dark ms-2']);
         }
         $out .= html_writer::end_tag('button');
         $out .= html_writer::end_tag('h2');
@@ -180,7 +180,7 @@ class profilecohort extends profilefields {
             $content = '';
             foreach ($cohortmembers as $cohortmember) {
                 $content .= html_writer::start_tag('li');
-                $content .= html_writer::tag('i', '', ['class' => 'fa fa-user pr-2']);
+                $content .= html_writer::tag('i', '', ['class' => 'fa fa-user pe-2']);
                 $content .= $cohortmember;
                 $content .= html_writer::end_tag('li');
             }
@@ -388,7 +388,7 @@ class profilecohort extends profilefields {
         $custom = ['cohorts' => $allcohorts];
         $this->form = new cohort_form(null, $custom);
 
-        $redir = new \moodle_url('/local/profilecohort/index.php');
+        $redir = new \core\url('/local/profilecohort/index.php');
         if ($this->form->is_cancelled()) {
             redirect($redir);
         }
